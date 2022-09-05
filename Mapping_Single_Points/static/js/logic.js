@@ -24,13 +24,13 @@ var markerCenter = L.marker([40.7, -94.5]).addTo(map);
 //  Add a marker to the map for Los Angeles, California.
 let markerLA = L.marker([34.0522, -118.2437]).addTo(map);
 
-// // Add a circle to the map
-// var circle = L.circle([34.0522, -118.2437], {
-//     color: 'black',
-//     fillColor: '#ffffa1',
-//     fillOpacity: 0.5,
-//     radius: 300
-//  }).addTo(map);
+// Add a circle to the map at Santa Cruz CA
+var circle = L.circle([36.974117, -122.030792], {
+    color: 'black',
+    fillColor: '#ffffa1',
+    fillOpacity: 0.5,
+    radius: 100000
+ }).addTo(map);
 
  // Add a circle to the map using circleMarker
 var circleMarker = L.circleMarker([34.0522, -118.2437], {
@@ -39,3 +39,13 @@ var circleMarker = L.circleMarker([34.0522, -118.2437], {
     fillOpacity: 0.5,
     radius: 30
  }).addTo(map);
+
+// Get city data from city.js
+let cityData = cities;
+console.log(cityData);
+
+// Loop through the cities array and create one marker for each city
+cityData.forEach(city => {    
+    console.log(city)
+    L.marker(city.location).addTo(map);
+})
