@@ -40,12 +40,21 @@ var circleMarker = L.circleMarker([34.0522, -118.2437], {
     radius: 30
  }).addTo(map);
 
+
+
 // Get city data from city.js
 let cityData = cities;
+
 console.log(cityData);
 
 // Loop through the cities array and create one marker for each city
 cityData.forEach(city => {    
     console.log(city)
-    L.marker(city.location).addTo(map);
+    L.circleMarker(city.location, {
+        radius: city.population/100000,
+        color: 'orange',
+        fillColor: '#FFA500'
+    })
+    .bindPopup("<h2>" + city.city + ", " + city.state + "</h2> <hr> <h3>Population " + city.population.toLocaleString() + "</h3>")
+    .addTo(map)
 })
