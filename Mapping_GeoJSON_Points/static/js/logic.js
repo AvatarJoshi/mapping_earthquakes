@@ -1,12 +1,8 @@
 // Add console.log to check to see if our code is working.
 console.log("working");
 
-// Create the map object with a center and zoom level.
-let map = L.map('mapid').setView([30, 30], 2);
-
-
 // We create the tile layer that will be the background of our map.
-let streets = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+let satelliteStreets = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
     id: "mapbox/satellite-streets-v11",
@@ -14,8 +10,51 @@ let streets = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{
     zoomOffset: -1,
     accessToken: MAPBOX_KEY
 });
-// Then we add our 'graymap' tile layer to the map.
-streets.addTo(map);
+
+// We create the dark view tile layer that will be an option for our map.
+let dark = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: "mapbox/dark-v10",
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: MAPBOX_KEY
+});
+
+// Create a base layer that holds both maps
+let baseMaps = {
+    Satellite: satelliteStreets,
+    Dark: dark
+};
+
+// Create the map object with a center and zoom level.
+let map = L.map('mapid', {
+    center: [40.7, -94.5],
+    zoom: 4,
+    layers: [satelliteStreets]
+});
+
+// Pass our map layers into our layers control
+// and add the layer control to the map.
+L.control.layers(baseMaps).addTo(map);
+
+
+// Access airport GeoJSON data from URL
+let airportData = "https://raw.githubusercontent.com/AvatarJoshi/mapping_earthquakes/main/majorAirports.json";
+
+// Grab the GeoJSON data
+d3.json(airportData).then(data => {
+    console.log(data);
+    // Create a GeoJSON layer with the retrieved data
+    L.geoJSON(data, {
+        onEachFeature: function(feature, layer) {
+            console.log(layer);
+            layer.bindPopup("<h2>" + "City: " + feature.properties.city +
+            "</h2> <hr> <h3>" + "Airport Name: " + feature.properties.name + "</h3> <hr> <h4>" + 
+            "Airport Code: " + feature.properties.faa);
+        }
+    }).addTo(map);
+})
 
 // // Add a marker to the map
 // var markerCenter = L.marker([40.7, -94.5]).addTo(map);
@@ -41,12 +80,11 @@ streets.addTo(map);
 
 
 
-// Get city data from city.js
-let cityData = cities;
-console.log(cityData);
+// // Get city data from city.js
+// let cityData = cities;
+// console.log(cityData);
 
-// Access airport GeoJSON data from URL
-let airportData = "https://raw.githubusercontent.com/AvatarJoshi/mapping_earthquakes/main/majorAirports.json";
+
 
 // // Grab the GeoJSON data
 // d3.json(airportData).then(data => {
@@ -55,19 +93,7 @@ let airportData = "https://raw.githubusercontent.com/AvatarJoshi/mapping_earthqu
 //     L.geoJSON(data).addTo(map);
 // })
 
-// Grab the GeoJSON data
-d3.json(airportData).then(data => {
-    console.log(data);
-    // Create a GeoJSON layer with the retrieved data
-    L.geoJSON(data, {
-        onEachFeature: function(feature, layer) {
-            console.log(layer);
-            layer.bindPopup("<h2>" + "City: " + feature.properties.city +
-            "</h2> <hr> <h3>" + "Airport Name: " + feature.properties.name + "</h3> <hr> <h4>" + 
-            "Airport Code: " + feature.properties.faa);
-        }
-    }).addTo(map);
-})
+
 
 // L.geoJSON(sanFranAirport, {
 // onEachFeature: function(feature, layer) {
