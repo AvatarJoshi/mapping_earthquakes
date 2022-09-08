@@ -52,8 +52,8 @@ let baseMaps = {
 
 // Create the map object with a center and zoom level.
 let map = L.map('mapid', {
-    center: [43.7, -79.3],
-    zoom: 11,
+    center: [39.5, -98.5],
+    zoom: 3,
     layers: [streets]
 });
 
@@ -63,7 +63,7 @@ L.control.layers(baseMaps).addTo(map);
 
 
 // Access torontoData GeoJSON data from URL
-let torontoNeighborhoods = "https://raw.githubusercontent.com/AvatarJoshi/mapping_earthquakes/Polygons/torontoNeighborhoods.json";
+let earthquakes_7days = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
 // Create a style for the lines.
 let myStyle = {
@@ -74,13 +74,13 @@ let myStyle = {
 }
 
 // Grab the GeoJSON data
-d3.json(torontoNeighborhoods).then(data => {
-    console.log(data.features[0]);
+d3.json(earthquakes_7days).then(data => {
+    console.log("Earthquake Data from Past 7 Days: ", data.features[0].properties.place);
     // Create a GeoJSON layer with the retrieved data
     L.geoJSON(data, {
         style: myStyle
-    }).bindPopup("<h2>" + "Neignborhood: " + data.features[0].properties.AREA_NAME + 
-    "</h2> <hr> <h3>" + "</h3>")
+    }).bindPopup("<h2>" + "Location: " + data.features[0].properties.place + 
+    "</h2> <hr> <h3>" + "Magnitude: " + data.features[0].properties.mag + "</h3>")
     .addTo(map);
 });
 
