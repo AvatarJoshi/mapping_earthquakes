@@ -52,9 +52,9 @@ let baseMaps = {
 
 // Create the map object with a center and zoom level.
 let map = L.map('mapid', {
-    center: [44, -80],
-    zoom: 2,
-    layers: [dark]
+    center: [43.7, -79.3],
+    zoom: 11,
+    layers: [streets]
 });
 
 // Pass our map layers into our layers control
@@ -63,23 +63,24 @@ L.control.layers(baseMaps).addTo(map);
 
 
 // Access torontoData GeoJSON data from URL
-let torontoData = "https://raw.githubusercontent.com/AvatarJoshi/mapping_earthquakes/Mapping_GeoJSON_Linestrings/torontoRoutes.json";
+let torontoNeighborhoods = "https://raw.githubusercontent.com/AvatarJoshi/mapping_earthquakes/Polygons/torontoNeighborhoods.json";
 
 // Create a style for the lines.
 let myStyle = {
-    color: "#ffffa1",
-    weight: 2,
-    opacity: 0.4
+    color: "white",
+    fillColor: "blue",
+    weight: 1,
+    opacity: .4
 }
 
 // Grab the GeoJSON data
-d3.json(torontoData).then(data => {
+d3.json(torontoNeighborhoods).then(data => {
     console.log(data.features[0]);
     // Create a GeoJSON layer with the retrieved data
     L.geoJSON(data, {
         style: myStyle
-    }).bindPopup("<h2>" + "Airline: " + data.features[0].properties.airline + 
-    "</h2> <hr> <h3>" + "Destination: " + data.features[0].properties.dst + "</h3>")
+    }).bindPopup("<h2>" + "Neignborhood: " + data.features[0].properties.AREA_NAME + 
+    "</h2> <hr> <h3>" + "</h3>")
     .addTo(map);
 });
 
