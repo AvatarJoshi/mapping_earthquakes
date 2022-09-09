@@ -5,14 +5,14 @@ console.log("working");
 let streets = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}', {
 	attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
 	maxZoom: 18,
-	accessToken: API_KEY
+	accessToken: MAPBOX_KEY
 });
 
 // We create the second tile layer that will be the background of our map.
 let satelliteStreets = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}', {
 	attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
 	maxZoom: 18,
-	accessToken: API_KEY
+	accessToken: MAPBOX_KEY
 });
 
 // Create the map object with center, zoom level and default layer.
@@ -30,11 +30,13 @@ let baseMaps = {
 
 // 1. Add a 2nd layer group for the tectonic plate data.
 let allEarthquakes = new L.LayerGroup();
+let tectonicPlate = new L.LayerGroup();
 
 
 // 2. Add a reference to the tectonic plates group to the overlays object.
 let overlays = {
-  "Earthquakes": allEarthquakes
+  "Earthquakes": allEarthquakes,
+  "Tectonic Plates": tectonicPlate
 };
 
 // Then we add a control to the map that will allow the user to change which
@@ -139,9 +141,29 @@ legend.onAdd = function() {
   // Finally, we our legend to the map.
   legend.addTo(map);
 
+// Styles for the tectonic plate line features
+  function tecStyle(feature) {
+    return {
+      opacity: .8,
+      color: "#FF5349",
+      stroke: true,
+      weight: 3
+    };
+  }
 
   // 3. Use d3.json to make a call to get our Tectonic Plate geoJSON data.
-  d3.json().then(() {
-    
+  d3.json("https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json").then(data => 
+  {console.log("Total Tectonic Plates Data: ", data);
+  // Creating a GeoJSON layer with the retrieved data.
+  L.geoJSON(data, {
+
+        style: tecStyle,
+        onEachFeature: ((feature, layer) => {
+            layer
+        })
+    }).addTo(tectonicPlate);
   });
 });
+
+  // Then we add the tectonic plates layer to our map.
+  tectonicPlate.addTo(map);
