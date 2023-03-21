@@ -14,3 +14,4 @@ This dataset looks at the total earthquakes across the globe over a 1-week perio
 - High magnitude earthquakes (3+) appear to be especially prevalant in the eastern hemisphere; particularly along the east coasts of Japan and Australia. In addition, there are a high number of these higher magnitude earthquakes near Indonesia and Singapore. 
 
 ![earthquakes](/Earthquake_Challenge/earthquakes_screenshot.png)
+NOTE: Since the USGS earthquake feed is updated with new data every minute, the map will reflect the past 7-days earthquake data. 
