@@ -1,5 +1,7 @@
 # Mapping_Earthquakes
 
+**Deployed Site:** https://avatarjoshi.github.io/mapping_earthquakes/
+
 ## Project Overview
 **Purpose**: Extracting and visualizing geoJSON data can provide unique insights into global phenomena. In this project I aimed to develop mastery of the Leaflet.js API to map global earthquake data. 
 
