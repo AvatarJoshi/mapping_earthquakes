@@ -27,7 +27,7 @@ let dark = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?
 
 // Create the map object with center, zoom level and default layer.
 let map = L.map('mapid', {
-	center: [40.7, -94.5],
+	center: [10, -20.5],
 	zoom: 3,
 	layers: [dark]
 });
@@ -161,9 +161,9 @@ legend.onAdd = function() {
     };
   }
 
-// DELIVERABLE 1 CODE
 
-  // 3. Use d3.json to make a call to get our Tectonic Plate geoJSON data.
+
+  // Use d3.json to make a call to get our Tectonic Plate geoJSON data.
   d3.json("https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json").then(data => 
   {console.log("Total Tectonic Plates Data: ", data);
   // Creating a GeoJSON layer with the retrieved data.
@@ -178,9 +178,8 @@ legend.onAdd = function() {
 });
 
 
-// DELIVERABLE 2 CODE
 
-// 3. Retrieve the major earthquake GeoJSON data >4.5 mag for the week.
+// Retrieve the major earthquake GeoJSON data >4.5 mag for the week.
 d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson").then(function(data) {
 
   // 4. Use the same style as the earthquake data.
@@ -196,7 +195,7 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geoj
     };
   }
   
-  // 5. Change the color function to use three colors for the major earthquakes based on the magnitude of the earthquake.
+  // Change the color function to use three colors for the major earthquakes based on the magnitude of the earthquake.
   function getColor(magnitude) {
     if (magnitude > 5) {
       return "#ea2c2c";
@@ -211,7 +210,7 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geoj
     return "#98ee00";
   }
   
-  // 6. Use the function that determines the radius of the earthquake marker based on its magnitude.
+  // Use the function that determines the radius of the earthquake marker based on its magnitude.
   function getRadius(magnitude) {
     if (magnitude === 0) {
       return 1;
@@ -219,7 +218,7 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geoj
     return magnitude * 4;
   }
   
-  // 7. Creating a GeoJSON layer with the retrieved data that adds a circle to the map 
+  // Creating a GeoJSON layer with the retrieved data that adds a circle to the map 
   // sets the style of the circle, and displays the magnitude and location of the earthquake
   //  after the marker has been created and styled.
   L.geoJson(data, {
@@ -236,9 +235,9 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geoj
    onEachFeature: function(feature, layer) {
     layer.bindPopup("Magnitude: " + feature.properties.mag + "<br>Location: " + feature.properties.place);
   }
-    // 8. Add the major earthquakes layer to the map.
+    // Add the major earthquakes layer to the map.
 }).addTo(majorEarthquakes);
-  // 9. Close the braces and parentheses for the major earthquake data.
+  // Close the braces and parentheses for the major earthquake data.
   });
 
 
